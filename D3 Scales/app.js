@@ -1,4 +1,8 @@
-var data = [10, 20, 30, 40, 50];
+var data = [];
+for (let i = 0; i < 20; i++) {
+    const num = Math.floor(d3.randomUniform(1, 50)());
+    data.push(num);
+}
 
 d3.select('#chart')
     .selectAll('div')
