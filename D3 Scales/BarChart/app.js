@@ -1,37 +1,50 @@
-var data = [];
-for (let i = 0; i < 15; i++) {
-    const num = Math.floor(d3.randomUniform(1, 50)());
-    data.push(num);
-}
+// const data = [];
+// for (let i = 0; i < 15; i++) {
+//     const num = Math.floor(d3.randomUniform(1, 50)());
+//     data.push(num);
+// }
+
+const data = [6,20,21,14,2,30,7,16,25,5,11,28,10,26,9];
 
 const CHART_WIDTH = 800;
 const CHART_HEIGHT = 400;
 const BAR_PADDING = 5;
 
-// create SVG element
+// Create SVG element
 const svg = d3.select('#chart')
     .append('svg')
     .attr('width', CHART_WIDTH)
     .attr('height', CHART_HEIGHT);
 
-// bind data and create bars
+// Create Scales
+const xScale = d3.scaleBand()
+    .domain(d3.range(data.length))
+    .rangeRound([0, CHART_WIDTH])
+    .paddingInner(0.05);
+
+const yScale = d3.scaleLinear()
+    .domain([0, d3.max(data)])
+    .range([0, CHART_HEIGHT]);
+
+
+// Bind data and create bars
 svg.selectAll('rect')
     .data(data)
     .enter()
     .append('rect')
     .attr('x', (d, i) => {
-        return i * (CHART_WIDTH / data.length);
+        return xScale(i);
     })
     .attr('y', d => {
-        return CHART_HEIGHT - d * 5;
+        return CHART_HEIGHT - yScale(d);
     })
-    .attr('width', CHART_WIDTH / data.length - BAR_PADDING)
+    .attr('width', xScale.bandwidth())
     .attr('height', d => {
-        return d * 5;
+        return yScale(d);
     })
     .style('fill', '#7ED26D');
 
-// create labels
+// Create labels
 svg.selectAll('text')
     .data(data)
     .enter()
@@ -40,11 +53,10 @@ svg.selectAll('text')
         return d;
     })
     .attr('x', (d, i) => {
-        return i * (CHART_WIDTH / data.length) +
-                    (CHART_WIDTH / data.length - BAR_PADDING) / 2;
+        return xScale(i ) + xScale.bandwidth() / 2;
     })
     .attr('y', d => {
-        return CHART_HEIGHT - d * 5 + 15;
+        return CHART_HEIGHT - yScale(d) + 15;
     })
     .attr('font-size', 14)
     .attr('fill', '#fff')

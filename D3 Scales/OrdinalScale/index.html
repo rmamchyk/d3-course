@@ -7,9 +7,12 @@
 <body>
     <script src="https://d3js.org/d3.v4.js"></script>
     <script>
-        var fruit       =   [
-            'Apples', 'Oranges', 'Grapes', 'Strawberry','Kiwi'
+        const fruit = [
+            'Apples', 'Oranges', 'Grapes', 'Strawberry', 'Kiwi'
         ];
+        const scale = d3.scaleBand()
+            .domain(d3.range(fruit.length))
+            .range([0, 500]);
     </script>
 </body>
 </html>
