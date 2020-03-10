@@ -61,7 +61,17 @@ svg.selectAll('rect')
     .attr('height', d => {
         return yScale(d.num);
     })
-    .style('fill', '#7ED26D');
+    .style('fill', '#7ED26D')
+    .on('mouseover', function(){
+        d3.select(this)
+            .transition()
+            .style('fill', '#0c9cdf');
+    })
+    .on('mouseout', function(){
+        d3.select(this)
+            .transition()
+            .style('fill', '#7ED26D');
+    });
 
 // Create labels
 svg.selectAll('text')
@@ -79,7 +89,8 @@ svg.selectAll('text')
     })
     .attr('font-size', 14)
     .attr('fill', '#fff')
-    .attr('text-anchor', 'middle');
+    .attr('text-anchor', 'middle')
+    .style('pointer-events', 'none');
 
 // Events
 // Update Data
