@@ -62,15 +62,29 @@ svg.selectAll('rect')
         return yScale(d.num);
     })
     .style('fill', '#7ED26D')
-    .on('mouseover', function(){
+    .on('mouseover', function(d){
         d3.select(this)
             .transition()
             .style('fill', '#0c9cdf');
+
+        // Show Tooltip
+        const x = parseFloat(d3.select(this).attr('x')) + xScale.bandwidth() / 2;
+        const y = parseFloat(d3.select(this).attr('y')) / 2 + CHART_HEIGHT / 2;
+
+        d3.select('#tooltip')
+            .style('left', x + 'px')
+            .style('top', y + 'px')
+            .style('display', 'block')
+            .text(d.num);
     })
     .on('mouseout', function() {
         d3.select(this)
             .transition('change_color_back')
             .style('fill', '#7ED26D');
+
+        // Hide tooltip
+        d3.select('#tooltip')
+            .style('display', 'none');
     })
     .on('click', function() {
         SORT_FLAG = !SORT_FLAG;
