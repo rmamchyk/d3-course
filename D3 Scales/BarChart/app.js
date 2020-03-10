@@ -26,7 +26,7 @@ const key = d => d.key;
 
 const CHART_WIDTH = 800;
 const CHART_HEIGHT = 400;
-const BAR_PADDING = 5;
+let SORT_FLAG = false;
 
 // Create SVG element
 const svg = d3.select('#chart')
@@ -67,10 +67,37 @@ svg.selectAll('rect')
             .transition()
             .style('fill', '#0c9cdf');
     })
-    .on('mouseout', function(){
+    .on('mouseout', function() {
         d3.select(this)
-            .transition()
+            .transition('change_color_back')
             .style('fill', '#7ED26D');
+    })
+    .on('click', function() {
+        SORT_FLAG = !SORT_FLAG;
+
+        svg.selectAll('rect')
+            .sort(function(a, b) {
+                return SORT_FLAG ?
+                    d3.ascending(a.num, b.num) :
+                    d3.descending(a.num, b.num);
+            })
+            .transition('sort')
+            .duration(1000)
+            .attr('x', (d, i) => {
+                return xScale(i);
+            });
+
+        svg.selectAll('text')
+            .sort(function(a, b) {
+                return SORT_FLAG ?
+                    d3.ascending(a.num, b.num) :
+                    d3.descending(a.num, b.num);
+            })
+            .transition()
+            .duration(1000)
+            .attr('x', (d, i) => {
+                return xScale(i) + xScale.bandwidth() / 2;
+            })
     });
 
 // Create labels
