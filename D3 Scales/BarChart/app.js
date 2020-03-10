@@ -1,5 +1,5 @@
 var data = [];
-for (let i = 0; i < 5; i++) {
+for (let i = 0; i < 15; i++) {
     const num = Math.floor(d3.randomUniform(1, 50)());
     data.push(num);
 }
