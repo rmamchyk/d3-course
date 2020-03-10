@@ -32,6 +32,15 @@ const yScale = d3.scaleLinear()
 //     .domain([0, d3.max(data, d => d[1])])
 //     .range([0, 25]);
 
+// Clip Paths
+svg.append('clipPath')
+    .attr('id', 'plot-area-clip-path')
+    .append('rect')
+    .attr('x', PADDING)
+    .attr('y', PADDING)
+    .attr('width', CHART_WIDTH - PADDING * 3)
+    .attr('height', CHART_HEIGHT - PADDING * 2);
+
 // Create Axis
 const xAxis = d3.axisBottom(xScale)
     // .ticks(5);
@@ -50,7 +59,10 @@ svg.append('g')
     .call(yAxis);
 
 // Create Circles
-svg.selectAll('circle')
+svg.append('g')
+    .attr('id', 'plot-area')
+    .attr('clip-path', 'url(#plot-area-clip-path)')
+    .selectAll('circle')
     .data(data)
     .enter()
     .append('circle')
@@ -97,16 +109,30 @@ d3.select('button').on('click', () => {
     xScale.domain([0, d3.max(data, d => d[0])]);
     yScale.domain([0, d3.max(data, d => d[1])]);
 
+
+    const colors = ['#f26d6d', '#1e6190', '#7559d9', '#d1ab03'];
+    const colorIndex = Math.floor(Math.random() * colors.length);
+
     svg.selectAll('circle')
         .data(data)
         .transition()
         .duration(1000)
+        // .on('start', function() {
+        //     d3.select(this)
+        //         .attr('fill', '#f26d2d');
+        // })
         .attr('cx', d => {
             return xScale(d[0])
         })
         .attr('cy', d => {
             return yScale(d[1])
-        });
+        })
+        // .on('end', function() {
+        //     d3.select(this)
+        //         .attr('fill', colors[colorIndex]);
+        // });
+        .transition()
+        .attr('fill', colors[colorIndex])
 
     // Update Axis
     svg.select('.x-axis')
