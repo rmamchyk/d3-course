@@ -64,16 +64,19 @@ svg.selectAll('text')
 
 // Events
 d3.select('button').on('click', () => {
-    data.reverse();
+    // data.reverse();
+    data[0] = 50;
+
+    yScale.domain([0, d3.max(data)])
 
     svg.selectAll('rect')
         .data(data)
         .transition()
-        .delay((d, i) => {
-            return i / data.length * 1000;
-        })
+        // .delay((d, i) => {
+        //     return i / data.length * 1000;
+        // })
         .duration(1000)
-        .ease(d3.easeElasticOut)
+        // .ease(d3.easeElasticOut)
         .attr('y', d => {
             return CHART_HEIGHT - yScale(d);
         })
@@ -84,11 +87,11 @@ d3.select('button').on('click', () => {
     svg.selectAll('text')
         .data(data)
         .transition()
-        .delay((d, i) => {
-            return i / data.length * 1000;
-        })
+        // .delay((d, i) => {
+        //     return i / data.length * 1000;
+        // })
         .duration(1000)
-        .ease(d3.easeElasticOut)
+        // .ease(d3.easeElasticOut)
         .text(d => d)
         .attr('x', (d, i) => {
             return xScale(i) + xScale.bandwidth() / 2;
